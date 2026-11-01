@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teknik Mekanik · Abone Arşivi</title>
+<style>
+:root{--line:#3e4048;--txt:#ececee;--sub:#9a9ca3;--cop:#d68c5a;--cop2:#f2be96;--panel:#2b2d33}
+*{box-sizing:border-box}
+html{background:#1e2024}
+body{margin:0;color:var(--txt);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,rgba(0,0,0,.02) 2px 5px),linear-gradient(#24262a,#1a1b1f);min-height:100vh;padding:0 16px 40px}
+.wrap{max-width:720px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:700 15px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--txt);text-decoration:none}
+.logo b{border:2px solid var(--txt);padding:2px 7px}
+.badge{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;letter-spacing:.04em}
+h1{font:700 clamp(28px,6vw,42px)/1.15 Georgia,"Times New Roman",serif;text-align:center;margin:28px 0 6px}
+.lead{text-align:center;color:var(--cop);font-weight:700;letter-spacing:.12em;font-size:13px;margin:0}
+.rule{width:120px;height:3px;background:var(--cop);margin:14px auto 26px}
+h2{font-size:13px;letter-spacing:.12em;color:var(--sub);text-transform:uppercase;margin:26px 0 10px}
+.item{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;text-decoration:none;color:var(--txt);transition:border-color .15s,transform .15s}
+.item:hover{border-color:var(--cop);transform:translateY(-1px)}
+.ic{flex:0 0 52px;height:52px;border-radius:12px;display:grid;place-items:center;font:700 13px ui-monospace,Menlo,Consolas,monospace;color:#1c1814;background:linear-gradient(#f0b48a,#c97a48)}
+.ic.pdf{background:linear-gradient(#ff8a7a,#d9534f);color:#fff}
+.tx{min-width:0;flex:1}
+.tx b{display:block;font-size:17px}
+.tx span{color:var(--sub);font-size:13.5px}
+.go{color:var(--cop2);font-weight:700;font-size:20px}
+.tx span.new{background:var(--cop);color:#1c1814 !important;font-size:11px;font-weight:700;border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.note{margin-top:26px;padding:12px 14px;border-radius:12px;border-left:5px solid var(--cop);background:rgba(214,140,90,.08);font-size:13.5px;color:var(--txt)}
+.foot{color:var(--sub);font-size:12px;text-align:center;margin-top:20px;line-height:1.6}
+.foot a{color:var(--cop2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener"><b>TM</b> TEKNİK MEKANİK</a>
+  <div class="badge">★ ABONELERE ÖZEL</div>
+</header>
+<h1>Abone Arşivi</h1>
+<p class="lead">PROGRAMLAR · TABLOLAR · REHBERLER</p>
+<div class="rule"></div>
+
+<h2>Hesap programları</h2>
+<a class="item" href="hidrolik.html">
+  <div class="ic">HYD</div>
+  <div class="tx"><b>Hidrolik Ünite Hesaplayıcı <span class="new">YENİ</span></b><span>Silindir · pompa · motor · tank · hortum çapları</span></div>
+  <div class="go">›</div>
+</a>
+
+<h2>Tablolar ve PDF'ler</h2>
+<a class="item" href="celik-muadil.pdf">
+  <div class="ic pdf">PDF</div>
+  <div class="tx"><b>Çelik Muadil Tablosu</b><span>EN · DIN · AISI · JIS · 24 malzeme · 6 sayfa</span></div>
+  <div class="go">›</div>
+</a>
+
+<div class="note">Programlar taslak hesap aracıdır. Nihai hesap ve malzeme seçimi için tedarikçinize veya yetkin bir uzmana danışın.</div>
+<p class="foot">Yeni içerikler eklendikçe bu sayfada görünür.<br>© <a href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Teknik Mekanik · @teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</p>
+</div>
+</body>
+</html>

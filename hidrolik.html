@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hidrolik Ünite Hesaplayıcı · Teknik Mekanik</title>
+<style>
+:root{--bg:#1e2024;--bg2:#26282d;--panel:#2b2d33;--line:#3e4048;--txt:#ececee;--sub:#9a9ca3;--cop:#d68c5a;--cop2:#f2be96;--ok:#7fd49a;--warn:#ff8a65}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,rgba(0,0,0,.02) 2px 5px),linear-gradient(#24262a,#1a1b1f);min-height:100vh;padding:0 16px 40px}
+.wrap{max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:700 15px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em}
+.logo b{border:2px solid var(--txt);padding:2px 7px}
+.badge{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;letter-spacing:.04em}
+h1{font:700 clamp(26px,5vw,40px)/1.15 Georgia,"Times New Roman",serif;text-align:center;margin:26px 0 6px}
+.lead{text-align:center;color:var(--cop);font-weight:700;letter-spacing:.12em;font-size:13px;margin:0}
+.rule{width:120px;height:3px;background:var(--cop);margin:14px auto 22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 12px}
+.card h2{margin:0 0 12px;font-size:14px;letter-spacing:.1em;color:var(--cop);text-transform:uppercase}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 110px 58px;align-items:center;gap:8px;margin:7px 0}
+.row label{color:var(--txt);font-size:14px}
+.row label small{display:block;color:var(--sub);font-size:11.5px}
+input,select{width:100%;background:#1c1d21;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 8px;font:600 15px ui-monospace,Menlo,Consolas,monospace;text-align:right}
+input:focus,select:focus{outline:2px solid var(--cop);border-color:transparent}
+.u{color:var(--sub);font-size:12.5px}
+details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+summary{cursor:pointer;color:var(--sub);font-size:13px}
+.res h3{margin:16px 0 6px;font-size:13px;color:var(--cop2);letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.res h3 span{background:var(--cop);color:#1c1814;border-radius:6px;padding:0 7px;font-size:12px}
+.res h3:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse}
+td{padding:6px 4px;border-bottom:1px solid #34363d;vertical-align:top}
+td.k{color:var(--sub);font-size:13.5px;width:46%}
+td.v{font:700 15px ui-monospace,Menlo,Consolas,monospace;text-align:right;white-space:nowrap}
+td.f{font:12px ui-monospace,Menlo,Consolas,monospace;color:#7d8088;padding-top:0;border-bottom:1px solid #34363d}
+tr.hl td.v{color:var(--cop2)}
+.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:6px}
+@media(max-width:560px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big div{background:#202126;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.big b{display:block;font:700 22px ui-monospace,Menlo,Consolas,monospace;color:var(--cop2)}
+.big i{font-style:normal;color:var(--sub);font-size:12px}
+.msg{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13.5px;border-left:4px solid var(--warn);background:rgba(255,138,101,.08)}
+.msg.ok{border-color:var(--ok);background:rgba(127,212,154,.07)}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px}
+.btn{background:transparent;border:1px solid var(--cop);color:var(--cop2);padding:9px 16px;border-radius:22px;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
+.btn.p{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;border:0}
+.disc{margin:18px 0 0;padding:14px 16px;border-radius:12px;border:1px solid var(--cop);border-left:6px solid var(--cop);background:rgba(214,140,90,.08);font-size:14px;line-height:1.55}
+.disc b{color:var(--cop2)}
+.ig{display:inline-flex;align-items:center;gap:8px;color:var(--txt);text-decoration:none}
+.ig:hover{color:var(--cop2)}
+.foot{color:var(--sub);font-size:12px;text-align:center;margin-top:18px;line-height:1.6}
+@media print{body{background:#fff;color:#000;padding:0}.card{background:#fff;border-color:#aaa}input,select{background:#fff;color:#000;border-color:#aaa}td.k,td.f,.u,.foot,.row label small{color:#444}.btns,details summary{display:none}.disc{background:#fff;border-color:#000}.disc b{color:#000}td.v,.big b,tr.hl td.v{color:#000}.badge{border:1px solid #000}header{border-color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo ig" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener" title="Instagram: @teknik.mekaniktm"><b>TM</b> TEKNİK MEKANİK</a>
+  <div class="badge">★ ABONELERE ÖZEL</div>
+</header>
+<h1>Hidrolik Ünite Hesaplayıcı</h1>
+<p class="lead">SİLİNDİR · POMPA · MOTOR · TANK · HORTUM</p>
+<p style="text-align:center;margin:8px 0 0;font-size:13px;color:var(--sub)">Taslak hesap aracıdır · nihai seçim için hidrolik tedarikçinize danışın</p>
+<div class="rule"></div>
+
+<div class="grid">
+<section class="card">
+  <h2>Girdiler</h2>
+  <div class="row"><label>Piston çapı D</label><input id="D" type="number" value="80" step="1"><span class="u">mm</span></div>
+  <div class="row"><label>Mil (rod) çapı d</label><input id="d" type="number" value="45" step="1"><span class="u">mm</span></div>
+  <div class="row"><label>Gereken itme kuvveti F<small>silindirin yenmesi gereken yük</small></label><input id="F" type="number" value="80" step="1"><span class="u">kN</span></div>
+  <div class="row"><label>Strok L</label><input id="L" type="number" value="500" step="10"><span class="u">mm</span></div>
+  <div class="row"><label>İleri hız v</label><input id="v" type="number" value="100" step="5"><span class="u">mm/s</span></div>
+  <div class="row"><label>Hat ve valf kayıpları Δp<small>basınç payı (tahmini)</small></label><input id="dp" type="number" value="15" step="1"><span class="u">bar</span></div>
+  <div class="row"><label>Motor devri n</label><select id="n"><option value="1450" selected>1450</option><option value="2900">2900</option><option value="960">960</option></select><span class="u">d/dk</span></div>
+  <details>
+    <summary>Varsayılan katsayılar (değiştirilebilir)</summary>
+    <div class="row"><label>Silindir mekanik verimi η<sub>s</sub></label><input id="es" type="number" value="0.95" step="0.01"><span class="u"></span></div>
+    <div class="row"><label>Pompa hacimsel verimi η<sub>v</sub></label><input id="ev" type="number" value="0.92" step="0.01"><span class="u"></span></div>
+    <div class="row"><label>Pompa toplam verimi η<sub>t</sub></label><input id="et" type="number" value="0.85" step="0.01"><span class="u"></span></div>
+    <div class="row"><label>Tank katsayısı k<small>tank = k × pompa debisi</small></label><input id="kt" type="number" value="3" step="0.5"><span class="u">dk</span></div>
+    <div class="row"><label>Emme hattı hızı</label><input id="ve" type="number" value="1.0" step="0.1"><span class="u">m/s</span></div>
+    <div class="row"><label>Dönüş hattı hızı</label><input id="vr" type="number" value="3.0" step="0.1"><span class="u">m/s</span></div>
+    <div class="row"><label>Basınç hattı hızı<small>boş = basınca göre otomatik</small></label><input id="vp" type="number" placeholder="oto" step="0.1"><span class="u">m/s</span></div>
+  </details>
+</section>
+
+<section class="card res" id="out"></section>
+</div>
+
+<div class="disc"><b>⚠ Önemli uyarı:</b> Bu program yalnızca ön boyutlandırma ve fikir vermek için hazırlanmış taslak bir hesap aracıdır. Sonuçlar genel kabul edilen katsayılara dayanır ve gerçek uygulamada farklılık gösterebilir. <b>Nihai hesap, ekipman seçimi ve imalat öncesinde mutlaka bir hidrolik tedarikçisi veya hidrolik konusunda yetkin bir uzmanla iletişime geçin.</b> Bu programın kullanımından doğabilecek hiçbir sonuçtan Teknik Mekanik sorumlu tutulamaz; kullanım sorumluluğu tamamen kullanıcıya aittir.</div>
+<div class="btns">
+  <button class="btn p" onclick="window.print()">Yazdır / PDF</button>
+  <a class="btn" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Instagram · @teknik.mekaniktm</a>
+</div>
+<p class="foot">Mil burkulması, sızdırmazlık, ısınma (soğutucu ihtiyacı), valf ve filtre seçimi hesaplanmaz.<br>Hız sınırları: Parker ve Brennan hat boyutlandırma önerileri (emme ≤ 1,2 m/s · dönüş ≈ 3 m/s · basınç 4,5–7,5 m/s). Tank katsayısı ve verimler genel kabuldür.<br>© <a class="ig" style="color:inherit;display:inline" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Teknik Mekanik · instagram.com/teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</p>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const IDS=["D","d","F","L","v","dp","n","es","ev","et","kt","ve","vr","vp"];
+const MOT=[0.37,0.55,0.75,1.1,1.5,2.2,3,4,5.5,7.5,11,15,18.5,22,30,37,45,55,75,90,110,132,160];
+const HOSE=[["3/16\"",4.8],["1/4\"",6.4],["5/16\"",7.9],["3/8\"",9.5],["1/2\"",12.7],["5/8\"",15.9],["3/4\"",19.1],["1\"",25.4],["1 1/4\"",31.8],["1 1/2\"",38.1],["2\"",50.8],["2 1/2\"",63.5]];
+const hose=x=>{const h=HOSE.find(a=>a[1]>=x-1e-9);return h?h[0]+" (iç Ø "+f(h[1],1)+")":"listede yok, boru kullan"};
+const f=(x,n=1)=>isFinite(x)?x.toLocaleString("tr-TR",{minimumFractionDigits:n,maximumFractionDigits:n}):"—";
+const up=(x,arr)=>arr.find(a=>a>=x-1e-9);
+function row(k,v,fm,hl){return `<tr${hl?' class="hl"':''}><td class="k">${k}</td><td class="v">${v}</td></tr>`+(fm?`<tr><td class="f" colspan="2">${fm}</td></tr>`:"")}
+function calc(){
+  const g=id=>parseFloat($(id).value);
+  const D=g("D"),d=g("d"),F=g("F")*1000,L=g("L"),v=g("v"),dp=g("dp"),n=g("n");
+  const es=g("es"),ev=g("ev"),et=g("et"),kt=g("kt"),ve=g("ve"),vr=g("vr");
+  let msgs=[];
+  if(!(D>0&&d>=0&&F>=0&&L>0&&v>0)){$("out").innerHTML='<div class="msg">Girdileri kontrol et.</div>';return}
+  if(d>=D){$("out").innerHTML='<div class="msg">Mil çapı piston çapından küçük olmalı.</div>';return}
+  const Ap=Math.PI*D*D/4, Aa=Math.PI*(D*D-d*d)/4, phi=Ap/Aa;
+  const pReq=F/(Ap*es)*10;                 // bar
+  const pW=pReq+dp;                        // pompa çıkış basıncı
+  const pSet=Math.ceil(pW*1.1/5)*5;        // emniyet valfi ayarı
+  const Fpull=pReq/10*Aa*es/1000;          // kN, aynı basınçta çekme
+  const Q=Ap*v*60/1e6;                     // L/dk
+  const vRet=Q*1e6/60/Aa;                  // mm/s geri hız
+  const tFwd=L/v, tRet=L/vRet;
+  const Vg=Q*1000/(n*ev);                  // cc/dev
+  const Qp=Vg*n*ev/1000;
+  const P=pW*Qp/(600*et);                  // kW
+  const Pm=up(P,MOT)||0;
+  const Vt=kt*Qp;
+  let vp=parseFloat($("vp").value);
+  const auto=!(vp>0); if(auto) vp = pSet<=140?4.5:(pSet<=210?6.0:7.5);
+  const dia=(Qlpm,vel)=>Math.sqrt(4*(Qlpm/60000)/(Math.PI*vel))*1000;
+  const Qret=Qp*phi;                       // geri harekette piston tarafından dönen debi
+  const dS=dia(Qp,ve), dP=dia(Qp,vp), dR=dia(Qret,vr);
+  if(!Pm) msgs.push(["Hesaplanan motor gücü listedeki en büyük standart motoru (160 kW) aşıyor.",0]);
+  if(pSet>250) msgs.push(["Emniyet valfi ayarı 250 barın üstünde. Silindir, hortum ve valflerin basınç sınıfını mutlaka kontrol et.",0]);
+  if(pReq<20) msgs.push(["Gereken basınç çok düşük; daha küçük bir silindir seçilebilir.",0]);
+  if(v>500) msgs.push(["İleri hız 0,5 m/s üstünde; standart contalar için yüksek olabilir, üretici sınırına bak.",0]);
+  if(L/d>15) msgs.push(["Strok / mil çapı oranı yüksek ("+f(L/d,0)+"). Mil burkulma kontrolü mutlaka yapılmalı.",0]);
+  if(!msgs.length) msgs.push(["Girdiler makul aralıkta. Yine de burkulma ve ısınma kontrolü bu programın dışındadır.",1]);
+  $("out").innerHTML=`
+  <div class="big">
+    <div><b>${f(pSet,0)}</b><i>emniyet valfi, bar</i></div>
+    <div><b>${f(Qp,1)}</b><i>pompa debisi, L/dk</i></div>
+    <div><b>${Pm?f(Pm,Pm<1?2:1):"—"}</b><i>motor, kW</i></div>
+    <div><b>${f(Vt,0)}</b><i>tank, L</i></div>
+  </div>
+  <h3><span>1</span>Silindir</h3><table>
+  ${row("Piston alanı A<sub>p</sub>",f(Ap/100,2)+" cm²","π·D²/4 = π·"+f(D,0)+"²/4")}
+  ${row("Halka alan A<sub>h</sub>",f(Aa/100,2)+" cm²","π·(D²−d²)/4 · alan oranı φ = "+f(phi,2))}
+  ${row("Gereken basınç p",f(pReq,1)+" bar","F / (A<sub>p</sub>·η<sub>s</sub>) = "+f(F/1000,1)+" kN / ("+f(Ap/100,2)+" cm² · "+es+")",1)}
+  ${row("Bu basınçta çekme kuvveti",f(Fpull,1)+" kN","p · A<sub>h</sub> · η<sub>s</sub>")}
+  ${row("Geri hız",f(vRet,0)+" mm/s","Q / A<sub>h</sub> (mil tarafı küçük → geri daha hızlı)")}
+  ${row("İleri / geri süre",f(tFwd,1)+" s / "+f(tRet,1)+" s","L / v")}
+  </table>
+  <h3><span>2</span>Pompa</h3><table>
+  ${row("Gereken debi Q",f(Q,1)+" L/dk","A<sub>p</sub> · v = "+f(Ap/100,2)+" cm² · "+f(v,0)+" mm/s",1)}
+  ${row("Pompa deplasmanı V<sub>g</sub>",f(Vg,1)+" cm³/dev","Q·1000 / (n·η<sub>v</sub>) = "+f(Q,1)+"·1000 / ("+n+"·"+ev+")",1)}
+  ${row("Çalışma basıncı",f(pW,1)+" bar","p + Δp = "+f(pReq,1)+" + "+f(dp,0))}
+  ${row("Emniyet valfi ayarı",f(pSet,0)+" bar","çalışma basıncı × 1,1 → 5 bar yukarı yuvarlandı")}
+  </table>
+  <h3><span>3</span>Elektrik motoru</h3><table>
+  ${row("Hesaplanan güç",f(P,2)+" kW","p·Q / (600·η<sub>t</sub>) = "+f(pW,1)+"·"+f(Qp,1)+" / (600·"+et+")")}
+  ${row("Seçilen standart motor",f(Pm,Pm<1?2:1)+" kW · "+n+" d/dk","bir üst IEC motor gücü",1)}
+  </table>
+  <h3><span>4</span>Yağ tankı</h3><table>
+  ${row("Tank hacmi",f(Vt,0)+" L","k × Q<sub>pompa</sub> = "+kt+" × "+f(Qp,1),1)}
+  </table>
+  <h3><span>5</span>Hortum iç çapı (en yakın büyük standart hortum)</h3><table>
+  ${row("Emme hattı",f(dS,1)+" mm → "+hose(dS),"Q = "+f(Qp,1)+" L/dk · v = "+f(ve,1)+" m/s",1)}
+  ${row("Basınç hattı",f(dP,1)+" mm → "+hose(dP),"v = "+f(vp,1)+" m/s"+(auto?" (basınca göre otomatik)":""),1)}
+  ${row("Dönüş hattı",f(dR,1)+" mm → "+hose(dR),"geri harekette dönen debi = Q·φ = "+f(Qret,1)+" L/dk · v = "+f(vr,1)+" m/s",1)}
+  </table>
+  ${msgs.map(m=>`<div class="msg${m[1]?' ok':''}">${m[0]}</div>`).join("")}`;
+}
+IDS.forEach(id=>$(id).addEventListener("input",calc));
+calc();
+</script>
+</body>
+</html>
