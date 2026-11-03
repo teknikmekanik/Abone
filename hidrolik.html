@@ -55,6 +55,7 @@ tr.hl td.v{color:var(--cop2)}
 .ig:hover{color:var(--cop2)}
 .foot{color:var(--sub);font-size:12px;text-align:center;margin-top:18px;line-height:1.6}
 @media print{body{background:#fff;color:#000;padding:0}.card{background:#fff;border-color:#aaa}input,select{background:#fff;color:#000;border-color:#aaa}td.k,td.f,.u,.foot,.row label small{color:#444}.btns,details summary{display:none}.disc{background:#fff;border-color:#000}.disc b{color:#000}td.v,.big b,tr.hl td.v{color:#000}.badge{border:1px solid #000}header{border-color:#000}}
+.preset{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 18px}
 </style>
 </head>
 <body>
@@ -68,6 +69,11 @@ tr.hl td.v{color:var(--cop2)}
 <p style="text-align:center;margin:8px 0 0;font-size:13px;color:var(--sub)">Taslak hesap aracıdır · nihai seçim için hidrolik tedarikçinize danışın</p>
 <div class="rule"></div>
 
+<div class="preset">
+  <button class="btn p" type="button" onclick="loadPreset()">50 t H-pres örneğini yükle</button>
+  <a class="btn" href="h-pres-50t.pdf" target="_blank" rel="noopener">50 t H-pres hesap dosyası (PDF)</a>
+</div>
+
 <div class="grid">
 <section class="card">
   <h2>Girdiler</h2>
@@ -77,6 +83,7 @@ tr.hl td.v{color:var(--cop2)}
   <div class="row"><label>Strok L</label><input id="L" type="number" value="500" step="10"><span class="u">mm</span></div>
   <div class="row"><label>İleri hız v</label><input id="v" type="number" value="100" step="5"><span class="u">mm/s</span></div>
   <div class="row"><label>Hat ve valf kayıpları Δp<small>basınç payı (tahmini)</small></label><input id="dp" type="number" value="15" step="1"><span class="u">bar</span></div>
+  <div class="row"><label>Mil burkulma boyu L<sub>k</sub><small>boş = 2 × (strok + 150 mm), en kötü durum</small></label><input id="Lk" type="number" placeholder="oto" step="10"><span class="u">mm</span></div>
   <div class="row"><label>Motor devri n</label><select id="n"><option value="1450" selected>1450</option><option value="2900">2900</option><option value="960">960</option></select><span class="u">d/dk</span></div>
   <details>
     <summary>Varsayılan katsayılar (değiştirilebilir)</summary>
@@ -98,12 +105,12 @@ tr.hl td.v{color:var(--cop2)}
   <button class="btn p" onclick="window.print()">Yazdır / PDF</button>
   <a class="btn" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Instagram · @teknik.mekaniktm</a>
 </div>
-<p class="foot">Mil burkulması, sızdırmazlık, ısınma (soğutucu ihtiyacı), valf ve filtre seçimi hesaplanmaz.<br>Hız sınırları: Parker ve Brennan hat boyutlandırma önerileri (emme ≤ 1,2 m/s · dönüş ≈ 3 m/s · basınç 4,5–7,5 m/s). Tank katsayısı ve verimler genel kabuldür.<br>© <a class="ig" style="color:inherit;display:inline" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Teknik Mekanik · instagram.com/teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</p>
+<p class="foot">Sızdırmazlık, ısınma (soğutucu ihtiyacı), valf ve filtre seçimi hesaplanmaz.<br>Hız sınırları: Parker ve Brennan hat boyutlandırma önerileri (emme ≤ 1,2 m/s · dönüş ≈ 3 m/s · basınç 4,5–7,5 m/s). Tank katsayısı ve verimler genel kabuldür.<br>© <a class="ig" style="color:inherit;display:inline" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Teknik Mekanik · instagram.com/teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</p>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-const IDS=["D","d","F","L","v","dp","n","es","ev","et","kt","ve","vr","vp"];
+const IDS=["D","d","F","L","v","dp","n","es","ev","et","kt","ve","vr","vp","Lk"];
 const MOT=[0.37,0.55,0.75,1.1,1.5,2.2,3,4,5.5,7.5,11,15,18.5,22,30,37,45,55,75,90,110,132,160];
 const HOSE=[["3/16\"",4.8],["1/4\"",6.4],["5/16\"",7.9],["3/8\"",9.5],["1/2\"",12.7],["5/8\"",15.9],["3/4\"",19.1],["1\"",25.4],["1 1/4\"",31.8],["1 1/2\"",38.1],["2\"",50.8],["2 1/2\"",63.5]];
 const hose=x=>{const h=HOSE.find(a=>a[1]>=x-1e-9);return h?h[0]+" (iç Ø "+f(h[1],1)+")":"listede yok, boru kullan"};
@@ -122,6 +129,8 @@ function calc(){
   const pW=pReq+dp;                        // pompa çıkış basıncı
   const pSet=Math.ceil(pW*1.1/5)*5;        // emniyet valfi ayarı
   const Fpull=pReq/10*Aa*es/1000;          // kN, aynı basınçta çekme
+  let Lk=parseFloat($("Lk").value); const LkAuto=!(Lk>0); if(LkAuto) Lk=2*(L+150);
+  const Imil=Math.PI*Math.pow(d,4)/64, Fk=Math.PI*Math.PI*210000*Imil/(Lk*Lk)/1000, Sb=F>0?Fk/(F/1000):Infinity;
   const Q=Ap*v*60/1e6;                     // L/dk
   const vRet=Q*1e6/60/Aa;                  // mm/s geri hız
   const tFwd=L/v, tRet=L/vRet;
@@ -139,8 +148,8 @@ function calc(){
   if(pSet>250) msgs.push(["Emniyet valfi ayarı 250 barın üstünde. Silindir, hortum ve valflerin basınç sınıfını mutlaka kontrol et.",0]);
   if(pReq<20) msgs.push(["Gereken basınç çok düşük; daha küçük bir silindir seçilebilir.",0]);
   if(v>500) msgs.push(["İleri hız 0,5 m/s üstünde; standart contalar için yüksek olabilir, üretici sınırına bak.",0]);
-  if(L/d>15) msgs.push(["Strok / mil çapı oranı yüksek ("+f(L/d,0)+"). Mil burkulma kontrolü mutlaka yapılmalı.",0]);
-  if(!msgs.length) msgs.push(["Girdiler makul aralıkta. Yine de burkulma ve ısınma kontrolü bu programın dışındadır.",1]);
+  if(Sb<3.5) msgs.push(["Mil burkulma emniyeti düşük (S = "+f(Sb,1)+"). Mil çapını büyüt veya burkulma boyunu kısalt.",0]);
+  if(!msgs.length) msgs.push(["Girdiler makul aralıkta. Isınma (soğutucu) kontrolü bu programın dışındadır.",1]);
   $("out").innerHTML=`
   <div class="big">
     <div><b>${f(pSet,0)}</b><i>emniyet valfi, bar</i></div>
@@ -155,6 +164,8 @@ function calc(){
   ${row("Bu basınçta çekme kuvveti",f(Fpull,1)+" kN","p · A<sub>h</sub> · η<sub>s</sub>")}
   ${row("Geri hız",f(vRet,0)+" mm/s","Q / A<sub>h</sub> (mil tarafı küçük → geri daha hızlı)")}
   ${row("İleri / geri süre",f(tFwd,1)+" s / "+f(tRet,1)+" s","L / v")}
+  ${row("Mil burkulma yükü F<sub>k</sub>",f(Fk,0)+" kN","Euler: π²·E·I / L<sub>k</sub>² · E = 210 GPa · L<sub>k</sub> = "+f(Lk,0)+" mm"+(LkAuto?" (oto)":""))}
+  ${row("Burkulma emniyeti",f(Sb,1),"S = F<sub>k</sub> / F · en az 3,5 önerilir",1)}
   </table>
   <h3><span>2</span>Pompa</h3><table>
   ${row("Gereken debi Q",f(Q,1)+" L/dk","A<sub>p</sub> · v = "+f(Ap/100,2)+" cm² · "+f(v,0)+" mm/s",1)}
@@ -176,6 +187,7 @@ function calc(){
   </table>
   ${msgs.map(m=>`<div class="msg${m[1]?' ok':''}">${m[0]}</div>`).join("")}`;
 }
+function loadPreset(){const P={D:160,d:100,F:490.5,L:300,v:4,dp:0,Lk:""};for(const k in P)$(k).value=P[k];$("n").value="1450";calc();$("out").scrollIntoView({behavior:"smooth"})}
 IDS.forEach(id=>$(id).addEventListener("input",calc));
 calc();
 </script>
