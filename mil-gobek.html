@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mil–Göbek Bağlantısı Hesaplayıcı · Teknik Mekanik</title>
+<style>
+:root{--bg:#1e2024;--bg2:#26282d;--panel:#2b2d33;--line:#3e4048;--txt:#ececee;--sub:#9a9ca3;--cop:#d68c5a;--cop2:#f2be96;--ok:#7fd49a;--warn:#ff8a65}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,rgba(0,0,0,.02) 2px 5px),linear-gradient(#24262a,#1a1b1f);min-height:100vh;padding:0 16px 40px}
+.wrap{max-width:1000px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:700 15px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--txt);text-decoration:none}
+.logo b{border:2px solid var(--txt);padding:2px 7px}
+.logo:hover{color:var(--cop2)}
+.badge{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;letter-spacing:.04em}
+h1{font:700 clamp(26px,5vw,40px)/1.15 Georgia,"Times New Roman",serif;text-align:center;margin:26px 0 6px}
+.lead{text-align:center;color:var(--cop);font-weight:700;letter-spacing:.12em;font-size:13px;margin:0}
+.rule{width:120px;height:3px;background:var(--cop);margin:14px auto 22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 12px}
+.card h2{margin:0 0 12px;font-size:14px;letter-spacing:.1em;color:var(--cop);text-transform:uppercase}
+.shared{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
+@media(max-width:760px){.shared{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.f label{display:block;font-size:13px;color:var(--txt);margin-bottom:4px}
+.f label small{color:var(--sub);font-size:11.5px}
+.f .in{display:flex;align-items:center;gap:6px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--txt);cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--cop)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;margin-top:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 112px 54px;align-items:center;gap:8px;margin:7px 0}
+.row label{color:var(--txt);font-size:14px}
+.row label small{display:block;color:var(--sub);font-size:11.5px}
+input,select{width:100%;background:#1c1d21;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 8px;font:600 15px ui-monospace,Menlo,Consolas,monospace;text-align:right}
+select{text-align:left;font-size:13.5px}
+.row select{grid-column:2/4}
+input:focus,select:focus{outline:2px solid var(--cop);border-color:transparent}
+.u{color:var(--sub);font-size:12.5px}
+details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+summary{cursor:pointer;color:var(--sub);font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+.tab{background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:8px 16px;font:700 14px system-ui,sans-serif;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--cop);border-color:var(--cop);color:#1c1814}
+.pane[hidden]{display:none!important}
+.res h3{margin:16px 0 6px;font-size:13px;color:var(--cop2);letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.res h3 span{background:var(--cop);color:#1c1814;border-radius:6px;padding:0 7px;font-size:12px}
+.res h3:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse}
+td,th{padding:6px 4px;border-bottom:1px solid #34363d;vertical-align:top}
+td.k{color:var(--sub);font-size:13.5px;width:50%}
+td.v{font:700 15px ui-monospace,Menlo,Consolas,monospace;text-align:right;white-space:nowrap}
+td.f{font:12px ui-monospace,Menlo,Consolas,monospace;color:#7d8088;padding-top:0}
+tr.hl td.v{color:var(--cop2)}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:6px}
+@media(max-width:560px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big div{background:#202126;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.big b{display:block;font:700 21px ui-monospace,Menlo,Consolas,monospace;color:var(--cop2)}
+.big i{font-style:normal;color:var(--sub);font-size:12px}
+.msg{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;border-left:4px solid var(--warn);background:rgba(255,138,101,.08)}
+.msg.ok{border-color:var(--ok);background:rgba(127,212,154,.07)}
+.cmp{overflow-x:auto}
+.cmp table{min-width:640px}
+.cmp th{font:700 12.5px system-ui,sans-serif;letter-spacing:.06em;color:var(--cop2);text-transform:uppercase;text-align:left;border-bottom:1px solid var(--cop)}
+.cmp td{font-size:13.5px;color:var(--txt)}
+.cmp td:first-child{color:var(--sub);width:22%}
+.cmp tr.cap td{font:700 15px ui-monospace,Menlo,Consolas,monospace}
+.y{color:var(--ok)}.n{color:var(--warn)}
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+@media(max-width:640px){.cards3{grid-template-columns:1fr}}
+.cards3 div{background:#202126;border:1px solid var(--line);border-radius:12px;padding:12px}
+.cards3 div.best{border-color:var(--cop)}
+.cards3 b{display:block;font:700 13px system-ui,sans-serif;letter-spacing:.08em;color:var(--cop2);text-transform:uppercase}
+.cards3 strong{display:block;font:700 22px ui-monospace,Menlo,Consolas,monospace;margin:4px 0}
+.cards3 i{font-style:normal;font-size:12.5px;color:var(--sub)}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px}
+.btn{background:transparent;border:1px solid var(--cop);color:var(--cop2);padding:9px 16px;border-radius:22px;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
+.btn.p{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;border:0}
+.disc{margin:18px 0 0;padding:14px 16px;border-radius:12px;border:1px solid var(--cop);border-left:6px solid var(--cop);background:rgba(214,140,90,.08);font-size:14px;line-height:1.55}
+.disc b{color:var(--cop2)}
+.foot{color:var(--sub);font-size:12px;text-align:center;margin-top:18px;line-height:1.6}
+.foot a{color:inherit}
+.preset{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 16px}
+@media print{body{background:#fff;color:#000;padding:0}.card,.big div,.cards3 div{background:#fff;border-color:#aaa}input,select{background:#fff;color:#000;border-color:#aaa}td.k,td.f,.u,.foot,.row label small,.cards3 i{color:#444}.btns,.tabs,.preset,details summary{display:none}.pane[hidden]{display:block!important}.disc{background:#fff;border-color:#000}.disc b,td.v,.big b,tr.hl td.v,.cards3 b{color:#000}header{border-color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener" title="Instagram: @teknik.mekaniktm"><b>TM</b> TEKNİK MEKANİK</a>
+  <div class="badge">★ ABONELERE ÖZEL</div>
+</header>
+<h1>Mil–Göbek Bağlantısı Hesaplayıcı</h1>
+<p class="lead">KAMA · SIKI GEÇME · KONİK SIKMA BİLEZİĞİ</p>
+<p style="text-align:center;margin:8px 0 0;font-size:13px;color:var(--sub)">Taslak hesap aracıdır · nihai seçim için tedarikçinize veya yetkin bir uzmana danışın</p>
+<div class="rule"></div>
+
+<div class="preset">
+  <button class="btn p" type="button" id="presetReel">Reeldeki örneği yükle (Ø50 · bilezik)</button>
+  <button class="btn" type="button" id="presetReset">Varsayılanlara dön</button>
+</div>
+
+<section class="card">
+  <h2>Ortak girdiler</h2>
+  <div class="shared">
+    <div class="f"><label>Mil çapı d</label><div class="in"><input id="d" type="number" value="50" step="1"><span class="u">mm</span></div></div>
+    <div class="f"><label>İletilecek tork T</label><div class="in"><input id="T" type="number" value="500" step="10"><span class="u">N·m</span></div></div>
+    <div class="f"><label>İşletme faktörü K<sub>A</sub> <small>darbe/kalkış payı</small></label><div class="in"><input id="KA" type="number" value="1.25" step="0.05"><span class="u"></span></div></div>
+    <label class="chk"><input id="rev" type="checkbox"> Yön değişen veya darbeli yük var</label>
+  </div>
+</section>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" data-t="kama" aria-selected="true">1 · Kama</button>
+  <button class="tab" role="tab" data-t="sg" aria-selected="false">2 · Sıkı geçme</button>
+  <button class="tab" role="tab" data-t="kb" aria-selected="false">3 · Konik bilezik</button>
+  <button class="tab" role="tab" data-t="cmp" aria-selected="false">4 · Karşılaştırma</button>
+</div>
+
+<!-- KAMA -->
+<div class="grid pane" id="p-kama">
+<section class="card">
+  <h2>Kama girdileri</h2>
+  <div class="row"><label>Kama sayısı</label><select id="kn"><option value="1" selected>1 kama</option><option value="2">2 kama (180°)</option></select></div>
+  <div class="row"><label>Kama formu<small>A: yuvarlak uçlu (parmak freze yuvası)</small></label><select id="kf"><option value="A" selected>Form A</option><option value="B">Form B (düz uç)</option></select></div>
+  <div class="row"><label>Göbek boyu L<sub>g</sub><small>kamaya ayrılabilecek en büyük boy</small></label><input id="kLh" type="number" value="80" step="5"><span class="u">mm</span></div>
+  <div class="row"><label>Göbek malzemesi</label><select id="kmh"></select></div>
+  <div class="row"><label>Göbek akma R<sub>e</sub></label><input id="kReh" type="number" value="305" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Mil malzemesi</label><select id="kms"></select></div>
+  <div class="row"><label>Mil akma R<sub>e</sub></label><input id="kRes" type="number" value="305" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Kama malzemesi akma R<sub>e</sub><small>kama çeliği E295 ≈ 295</small></label><input id="kRek" type="number" value="295" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Emniyet katsayısı S<small>p<sub>izin</sub> = R<sub>e</sub> / S</small></label><input id="kS" type="number" value="2" step="0.1"><span class="u"></span></div>
+</section>
+<section class="card res" id="o-kama"></section>
+</div>
+
+<!-- SIKI GEÇME -->
+<div class="grid pane" id="p-sg" hidden>
+<section class="card">
+  <h2>Sıkı geçme girdileri</h2>
+  <div class="row"><label>Göbek dış çapı D<sub>A</sub></label><input id="sDA" type="number" value="100" step="5"><span class="u">mm</span></div>
+  <div class="row"><label>Geçme boyu L<sub>F</sub></label><input id="sL" type="number" value="80" step="5"><span class="u">mm</span></div>
+  <div class="row"><label>En küçük sıkılık U<sub>min</sub><small>örnek: Ø50 H7/s6 → 18 µm</small></label><input id="sUmin" type="number" value="18" step="1"><span class="u">µm</span></div>
+  <div class="row"><label>En büyük sıkılık U<sub>max</sub><small>örnek: Ø50 H7/s6 → 59 µm</small></label><input id="sUmax" type="number" value="59" step="1"><span class="u">µm</span></div>
+  <div class="row"><label>Sürtünme (tutunma) katsayısı μ</label><select id="smu"><option value="0.14" selected>0,14 · çelik/çelik, ısıtarak</option><option value="0.20">0,20 · çelik/çelik, yağı alınmış, ısıtarak</option><option value="0.12">0,12 · çelik/çelik, basınçlı yağla, mineral yağ</option><option value="0.10">0,10 · çelik/dökme demir, basınçlı yağla</option></select></div>
+  <div class="row"><label>Göbek akma R<sub>e</sub></label><input id="sRe" type="number" value="305" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Kaymaya karşı emniyet hedefi S<sub>R</sub><small>DIN 7190 varsayılan en az 1,2</small></label><input id="sSR" type="number" value="1.5" step="0.1"><span class="u"></span></div>
+  <div class="row"><label>Göbek malzemesi (ısıtma sınırı)</label><select id="sTmax"><option value="350" selected>Yapı çeliği / dökme çelik · 350 °C</option><option value="300">Islah çeliği · 300 °C</option><option value="250">Yüzeyi sertleştirilmiş · 250 °C</option><option value="200">Sementasyon çeliği · 200 °C</option></select></div>
+  <details>
+    <summary>Varsayılan katsayılar (değiştirilebilir)</summary>
+    <div class="row"><label>Göbek Rz</label><input id="sRzA" type="number" value="4" step="0.5"><span class="u">µm</span></div>
+    <div class="row"><label>Mil Rz</label><input id="sRzI" type="number" value="4" step="0.5"><span class="u">µm</span></div>
+    <div class="row"><label>Göbek E<sub>A</sub></label><input id="sEA" type="number" value="210000" step="1000"><span class="u">N/mm²</span></div>
+    <div class="row"><label>Mil E<sub>I</sub></label><input id="sEI" type="number" value="210000" step="1000"><span class="u">N/mm²</span></div>
+    <div class="row"><label>Poisson ν</label><input id="snu" type="number" value="0.3" step="0.01"><span class="u"></span></div>
+    <div class="row"><label>Göbek ısıl genleşme α<small>çelik ≈ 11 · 10⁻⁶ 1/K</small></label><input id="salpha" type="number" value="11" step="0.5"><span class="u">10⁻⁶/K</span></div>
+    <div class="row"><label>Ortam sıcaklığı</label><input id="sTR" type="number" value="20" step="1"><span class="u">°C</span></div>
+  </details>
+</section>
+<section class="card res" id="o-sg"></section>
+</div>
+
+<!-- KONİK BİLEZİK -->
+<div class="grid pane" id="p-kb" hidden>
+<section class="card">
+  <h2>Konik bilezik girdileri</h2>
+  <div class="row"><label>İç halka temas boyu L<small>mil üzerindeki temas genişliği</small></label><input id="bL" type="number" value="20" step="1"><span class="u">mm</span></div>
+  <div class="row"><label>Mile baskı p<sub>W</sub><small>katalogdan</small></label><input id="bp" type="number" value="190" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Sürtünme katsayısı μ<small>katalog değerleri genelde yağlı montaj, 0,12</small></label><input id="bmu" type="number" value="0.12" step="0.01"><span class="u"></span></div>
+  <div class="row"><label>Katalog torku (varsa)<small>boş bırakılırsa formülle hesaplanır</small></label><input id="bTk" type="number" placeholder="formül" step="10"><span class="u">N·m</span></div>
+  <div class="row"><label>Bilezik dış çapı D</label><input id="bD" type="number" value="80" step="1"><span class="u">mm</span></div>
+  <div class="row"><label>Göbeğe baskı p<sub>N</sub><small>katalogdan</small></label><input id="bpN" type="number" value="115" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Göbek akma R<sub>e</sub></label><input id="bRe" type="number" value="305" step="5"><span class="u">N/mm²</span></div>
+  <div class="row"><label>Montaj tipi<small>L<sub>g</sub> göbek boyu · L<sub>b</sub> bilezik boyu</small></label><select id="bx"><option value="1">A · L<sub>g</sub> ≈ L<sub>b</sub> (x = 1)</option><option value="0.8">B · L<sub>g</sub> ≈ 2·L<sub>b</sub> (x = 0,8)</option><option value="0.6" selected>C · L<sub>g</sub> &gt; 2·L<sub>b</sub> (x = 0,6)</option></select></div>
+</section>
+<section class="card res" id="o-kb"></section>
+</div>
+
+<!-- KARŞILAŞTIRMA -->
+<div class="pane" id="p-cmp" hidden>
+<section class="card" style="margin-top:16px">
+  <h2>Aynı mil, aynı tork: üç yöntem</h2>
+  <div class="cards3" id="c3"></div>
+  <div id="cmsg"></div>
+  <div class="cmp" style="margin-top:14px"><table id="ctab"></table></div>
+</section>
+</div>
+
+<div class="disc"><b>⚠ Önemli uyarı:</b> Bu program yalnızca ön boyutlandırma ve fikir vermek için hazırlanmış taslak bir hesap aracıdır. Sonuçlar basitleştirilmiş formüllere ve genel kabul edilen katsayılara dayanır; yorulma, eğilme momenti, sürtünme korozyonu ve montaj hataları hesaba katılmaz. <b>Nihai hesap, parça seçimi ve imalat öncesinde mutlaka bileziğin/kamanın tedarikçisine veya konusunda yetkin bir uzmana danışın; bilezikte daima üreticinin kataloğundaki değerleri ve montaj talimatını kullanın.</b> Bu programın kullanımından doğabilecek hiçbir sonuçtan Teknik Mekanik sorumlu tutulamaz; kullanım sorumluluğu tamamen kullanıcıya aittir.</div>
+<div class="btns">
+  <button class="btn p" type="button" onclick="window.print()">Yazdır / PDF</button>
+  <a class="btn" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Instagram · @teknik.mekaniktm</a>
+  <a class="btn" href="index.html">Abone arşivine dön</a>
+</div>
+<p class="foot">Kama ölçüleri: ISO/DIN 6885-1 ile aynı boyutlar (JIS B 1301 tablosu ile karşılaştırıldı). Sıkı geçme: elastik Lamé çözümü, düzleşme kaybı 0,8·(Rz<sub>A</sub> + Rz<sub>I</sub>), tutunma katsayıları, ısıtma sıcaklığı ve 0,001·d montaj boşluğu DIN 7190 yaklaşımına göre. Bilezik göbek dış çapı: D<sub>g</sub> ≥ D·√((R<sub>e</sub> + x·p<sub>N</sub>) / (R<sub>e</sub> − x·p<sub>N</sub>)), bilezik kataloglarındaki yönteme göre. Malzeme akma değerleri çap aralığına göre değişir; kendi malzeme sertifikanı kullan.<br>© <a href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Teknik Mekanik · instagram.com/teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</p>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const f=(x,n=1)=>isFinite(x)?x.toLocaleString("tr-TR",{minimumFractionDigits:n,maximumFractionDigits:n}):"—";
+const g=id=>parseFloat(String($(id).value).replace(",","."));
+function row(k,v,fm,hl){return `<tr${hl?' class="hl"':''}><td class="k">${k}</td><td class="v">${v}</td></tr>`+(fm?`<tr><td class="f" colspan="2">${fm}</td></tr>`:"")}
+const msg=(t,ok)=>`<div class="msg${ok?' ok':''}">${t}</div>`;
+// ISO/DIN 6885-1 paralel kama: d üstü, d dahil, b, h, t1 (mil), t2 (göbek)
+const KEYS=[[6,8,2,2,1.2,1.0],[8,10,3,3,1.8,1.4],[10,12,4,4,2.5,1.8],[12,17,5,5,3.0,2.3],[17,22,6,6,3.5,2.8],[22,30,8,7,4.0,3.3],[30,38,10,8,5.0,3.3],[38,44,12,8,5.0,3.3],[44,50,14,9,5.5,3.8],[50,58,16,10,6.0,4.3],[58,65,18,11,7.0,4.4],[65,75,20,12,7.5,4.9],[75,85,22,14,9.0,5.4],[85,95,25,14,9.0,5.4],[95,110,28,16,10.0,6.4],[110,130,32,18,11.0,7.4],[130,150,36,20,12.0,8.4],[150,170,40,22,13.0,9.4],[170,200,45,25,15.0,10.4],[200,230,50,28,17.0,11.4],[230,260,56,32,20.0,12.4],[260,290,63,32,20.0,12.4],[290,330,70,36,22.0,14.4],[330,380,80,40,25.0,15.4],[380,440,90,45,28.0,17.4],[440,500,100,50,31.0,19.5]];
+const KL=[6,8,10,12,14,16,18,20,22,25,28,32,36,40,45,50,56,63,70,80,90,100,110,125,140,160,180,200,220,250,280,320,360,400];
+const MATS=[["S235JR",235],["S355J2 (16–40 mm)",345],["C45+N (16–100 mm)",305],["42CrMo4+QT (40–100 mm)",650],["Elle gir",0]];
+["kmh","kms"].forEach((id,j)=>{const s=$(id);MATS.forEach((m,i)=>{const o=document.createElement("option");o.value=m[1];o.textContent=m[0]+(m[1]?" · "+m[1]:"");if(i===2)o.selected=true;s.appendChild(o)});
+  s.addEventListener("change",()=>{if(+s.value>0){$(j?"kRes":"kReh").value=s.value;calc()}})});
+const R={};
+function common(){const d=g("d"),T=g("T"),KA=g("KA");return {d,T,KA,Td:T*KA,rev:$("rev").checked}}
+function calcKama(c){
+  const o=$("o-kama"); const {d,Td}=c;
+  const k=KEYS.find(r=>d>r[0]&&d<=r[1]);
+  if(!k){o.innerHTML=msg("Mil çapı tablo aralığının (6–500 mm) dışında.");R.kama=null;return}
+  const [,,b,h,t1,t2]=k; const n=+$("kn").value, phi=n===2?0.75:1, formA=$("kf").value==="A";
+  const Lh=g("kLh"),Reh=g("kReh"),Res=g("kRes"),Rek=g("kRek"),S=g("kS");
+  const kh=h-t1, ph=Reh/S, ps=Res/S, ta=0.5*Rek/S, TdN=Td*1000;
+  const leh=2*TdN/(d*kh*n*phi*ph), les=2*TdN/(d*t1*n*phi*ps), let_=2*TdN/(d*b*n*phi*ta);
+  const le=Math.max(leh,les,let_), gov=le===leh?"göbek ezilmesi":(le===les?"mil ezilmesi":"kama kesmesi");
+  const lreq=le+(formA?b:0); const lstd=KL.find(x=>x>=lreq-1e-9);
+  const lmax=[...KL].reverse().find(x=>x<=Lh+1e-9);
+  const lemax=lmax?lmax-(formA?b:0):0;
+  const qmin=Math.min(kh*ph,t1*ps,b*ta);
+  const Tcap=lemax>0?n*phi*d/2*lemax*qmin/1000:0;
+  R.kama={cap:Tcap,ok:!!lstd&&lstd<=Lh,txt:lstd?`${b}×${h}×${lstd}`:"—"};
+  let ms=[];
+  if(!lstd) ms.push(["Gereken boy standart kama boylarını aşıyor.",0]);
+  else{
+    if(lstd>Lh) ms.push([`Gereken kama boyu ${lstd} mm, göbek boyu ${f(Lh,0)} mm. Kama sığmıyor: göbeği uzat, ikinci kama ekle veya kamasız bağlantı düşün.`,0]);
+    if(lstd>1.5*d) ms.push([`Kama boyu 1,5·d'yi (${f(1.5*d,0)} mm) aşıyor. Uzun kamada yük boy boyunca eşit dağılmaz; ikinci kama, daha büyük mil çapı veya kamasız bağlantı daha doğru olur.`,0]);
+  }
+  if(n===2) ms.push(["İki kama 180° karşılıklı kabul edildi. Taşıma kapasitesi tek kamanın yaklaşık 1,5 katı alınır (her kamaya 0,75 katsayısı).",1]);
+  if(c.rev) ms.push(["Yön değişen veya darbeli yükte kama yuvası zamanla döverek büyür ve boşluk açılır. Bu tip yükte sıkı geçme veya konik bilezik daha uygundur.",0]);
+  if(!ms.length||ms.every(m=>m[1])) ms.push(["Kama bu tork için yeterli görünüyor. Mil yorulma hesabında kama yuvasının çentik etkisini ayrıca hesaba kat.",1]);
+  o.innerHTML=`
+  <div class="big"><div><b>${b} × ${h}</b><i>kama b × h, mm</i></div><div><b>${lstd?f(lstd,0):"—"}</b><i>standart boy, mm</i></div><div><b>${f(Tcap,0)}</b><i>izin verilen tork, N·m</i></div></div>
+  <h3><span>1</span>Standart kama ve yuva</h3><table>
+  ${row("Mil aralığı",`${k[0]} &lt; d ≤ ${k[1]} mm`,"ISO/DIN 6885-1 paralel kama")}
+  ${row("Kama b × h",`${b} × ${h} mm`,"",1)}
+  ${row("Mil yuva derinliği t<sub>1</sub>",f(t1,1)+" mm","")}
+  ${row("Göbek yuva derinliği t<sub>2</sub>",f(t2,1)+" mm","")}
+  ${row("Göbek taşıma yüksekliği",f(kh,1)+" mm","h − t<sub>1</sub> = "+h+" − "+f(t1,1))}
+  </table>
+  <h3><span>2</span>Gereken boy</h3><table>
+  ${row("Tasarım torku T<sub>d</sub>",f(Td,0)+" N·m","K<sub>A</sub> · T = "+f(c.KA,2)+" · "+f(c.T,0))}
+  ${row("Göbek izin verilen basınç",f(ph,0)+" N/mm²","R<sub>e</sub> / S = "+f(Reh,0)+" / "+f(S,1))}
+  ${row("Etkin boy (göbek ezilmesi)",f(leh,1)+" mm","2·T<sub>d</sub> / (d · (h−t<sub>1</sub>) · n · φ · p<sub>izin</sub>)")}
+  ${row("Etkin boy (mil ezilmesi)",f(les,1)+" mm","2·T<sub>d</sub> / (d · t<sub>1</sub> · n · φ · p<sub>izin,mil</sub>)")}
+  ${row("Etkin boy (kama kesmesi)",f(let_,1)+" mm","τ<sub>izin</sub> = 0,5 · R<sub>e,kama</sub> / S = "+f(ta,1)+" N/mm²")}
+  ${row("Belirleyici",gov,"")}
+  ${row("Gereken toplam boy",f(lreq,1)+" mm",formA?"etkin boy + b (form A, yuvarlak uçlar taşımaz)":"form B: toplam boy = etkin boy",1)}
+  ${row("Seçilen standart boy",lstd?f(lstd,0)+" mm":"—","DIN 6885 boy serisi, bir üst değer",1)}
+  </table>
+  <h3><span>3</span>Göbek boyuyla taşınabilen</h3><table>
+  ${row("Göbeğe sığan en uzun kama",lmax?f(lmax,0)+" mm":"—","L<sub>g</sub> = "+f(Lh,0)+" mm")}
+  ${row("İzin verilen tork (S dahil)",f(Tcap,0)+" N·m","n · φ · d/2 · l<sub>etkin</sub> · min(basınç × yükseklik)",1)}
+  </table>
+  ${ms.map(m=>msg(m[0],m[1])).join("")}`;
+}
+function calcSG(c){
+  const o=$("o-sg"); const {d,Td}=c;
+  const DA=g("sDA"),L=g("sL"),Umin=g("sUmin"),Umax=g("sUmax"),mu=parseFloat($("smu").value),Re=g("sRe"),SR=g("sSR");
+  const RzA=g("sRzA"),RzI=g("sRzI"),EA=g("sEA"),EI=g("sEI"),nu=g("snu"),al=g("salpha")*1e-6,TR=g("sTR"),Tlim=+$("sTmax").value;
+  if(!(DA>d)){o.innerHTML=msg("Göbek dış çapı mil çapından büyük olmalı.");R.sg=null;return}
+  if(!(Umax>=Umin)){o.innerHTML=msg("U<sub>max</sub>, U<sub>min</sub>'den küçük olamaz.");R.sg=null;return}
+  const s=0.8*(RzA+RzI), Ue1=Umin-s, Ue2=Umax-s;
+  const Q=d/DA, K=(1/EA)*((1+Q*Q)/(1-Q*Q)+nu)+(1/EI)*(1-nu);
+  const p1=Math.max(0,Ue1/1000/d/K), p2=Math.max(0,Ue2/1000/d/K);
+  const Tmin=mu*p1*Math.PI*d*d*L/2/1000, Fax=mu*p1*Math.PI*d*L/1000;
+  const sig=2*p2/(1-Q*Q), SF=Re/sig;
+  const Tj=TR+(Umax/1000+0.001*d)/(al*d);
+  const Sslip=Tmin/Td;
+  R.sg={cap:Tmin,ok:Sslip>=SR&&SF>=1.2,txt:"U "+f(Umin,0)+"–"+f(Umax,0)+" µm"};
+  let ms=[];
+  if(Ue1<=0) ms.push(["En küçük sıkılık, yüzey düzleşme kaybından küçük. Bağlantı tutmaz; sıkılığı artır veya yüzeyi daha ince işle.",0]);
+  else if(Sslip<SR) ms.push([`Kaymaya karşı emniyet ${f(Sslip,2)}, hedef ${f(SR,1)}. Sıkılığı artır, geçme boyunu uzat veya göbek dış çapını büyüt.`,0]);
+  if(sig>=Re) ms.push(["En büyük sıkılıkta göbek deliğindeki gerilme akma sınırını aşıyor; göbek plastik şekil değiştirir. Daha küçük sıkılık veya daha dayanımlı göbek malzemesi seç.",0]);
+  else if(SF<1.2) ms.push([`Göbek akma emniyeti ${f(SF,2)}. Genel kabul en az 1,2 civarı; sınırda.`,0]);
+  if(Tj>Tlim) ms.push([`Gereken ısıtma sıcaklığı ${f(Tj,0)} °C, bu göbek malzemesi için sınır ${Tlim} °C. Mili soğutarak (kuru buz / sıvı azot) montaj veya basınçlı yağla montaj düşün.`,0]);
+  if(!ms.length) ms.push(["Sıkı geçme bu tork için yeterli görünüyor. Göbek kenarlarında sürtünme korozyonu riskine ve sökümün zor olduğuna dikkat et.",1]);
+  o.innerHTML=`
+  <div class="big"><div><b>${f(Tmin,0)}</b><i>taşınan tork (U<sub>min</sub>), N·m</i></div><div><b>${f(Sslip,2)}</b><i>kayma emniyeti</i></div><div><b>${f(Tj,0)} °C</b><i>göbek ısıtma</i></div></div>
+  <h3><span>1</span>Etkin sıkılık</h3><table>
+  ${row("Yüzey düzleşme kaybı",f(s,1)+" µm","0,8 · (Rz<sub>A</sub> + Rz<sub>I</sub>) = 0,8 · ("+f(RzA,1)+" + "+f(RzI,1)+")")}
+  ${row("Etkin sıkılık",f(Ue1,1)+" – "+f(Ue2,1)+" µm","U − kayıp")}
+  ${row("Çap oranı Q<sub>A</sub>",f(Q,3),"d / D<sub>A</sub> = "+f(d,0)+" / "+f(DA,0))}
+  </table>
+  <h3><span>2</span>Temas basıncı ve tork</h3><table>
+  ${row("Temas basıncı p (U<sub>min</sub>)",f(p1,1)+" N/mm²","Lamé, dolu mil: p = (U/d) / [ (1/E<sub>A</sub>)·((1+Q²)/(1−Q²)+ν) + (1/E<sub>I</sub>)·(1−ν) ]",1)}
+  ${row("Temas basıncı p (U<sub>max</sub>)",f(p2,1)+" N/mm²","")}
+  ${row("Taşınan tork (en kötü durum)",f(Tmin,0)+" N·m","μ · p<sub>min</sub> · π · d² · L / 2 · (μ = "+f(mu,2)+")",1)}
+  ${row("Taşınan eksenel kuvvet",f(Fax,1)+" kN","μ · p<sub>min</sub> · π · d · L")}
+  ${row("Kaymaya karşı emniyet",f(Sslip,2),"T<sub>taşınan</sub> / T<sub>d</sub> · T<sub>d</sub> = "+f(Td,0)+" N·m",1)}
+  </table>
+  <h3><span>3</span>Göbek gerilmesi</h3><table>
+  ${row("Göbek deliğinde gerilme (U<sub>max</sub>)",f(sig,0)+" N/mm²","2 · p<sub>max</sub> / (1 − Q²) (Tresca)")}
+  ${row("Akma emniyeti",f(SF,2),"R<sub>e</sub> / σ = "+f(Re,0)+" / "+f(sig,0),1)}
+  </table>
+  <h3><span>4</span>Montaj (göbeği ısıtarak)</h3><table>
+  ${row("Gereken göbek sıcaklığı",f(Tj,0)+" °C","T<sub>ortam</sub> + (U<sub>max</sub> + 0,001·d) / (α · d) · montaj boşluğu 0,001·d = "+f(d,0)+" µm",1)}
+  ${row("Malzeme sınırı",Tlim+" °C","")}
+  </table>
+  ${ms.map(m=>msg(m[0],m[1])).join("")}`;
+}
+function calcKB(c){
+  const o=$("o-kb"); const {d,Td}=c;
+  const L=g("bL"),p=g("bp"),mu=g("bmu"),Tk=g("bTk"),D=g("bD"),pN=g("bpN"),Re=g("bRe"),x=parseFloat($("bx").value);
+  const Fr=p*Math.PI*d*L, Fs=mu*Fr, Tf=Fs*d/2/1000;
+  const Tc=Tk>0?Tk:Tf, Sb=Tc/Td, Fax=2*Tc/d;
+  let Dmin=NaN, hubOk=true;
+  if(Re>x*pN){Dmin=D*Math.sqrt((Re+x*pN)/(Re-x*pN))} else hubOk=false;
+  R.kb={cap:Tc,ok:Sb>=1&&hubOk,txt:"Ø"+f(d,0)+" × "+f(D,0)};
+  let ms=[];
+  if(Sb<1) ms.push(["Bileziğin torku tasarım torkunun altında. Daha büyük bilezik, iki bilezik veya daha geniş tip seç.",0]);
+  if(!hubOk) ms.push(["Göbek malzemesi bu baskı için yetersiz (R<sub>e</sub> ≤ x·p<sub>N</sub>). Daha dayanımlı göbek malzemesi seç.",0]);
+  if(Tk>0&&Math.abs(Tf-Tk)/Tk>0.25) ms.push([`Formülle bulunan ${f(Tf,0)} N·m, katalog değerinden belirgin şekilde farklı. Temas boyu, baskı veya μ girdisini kontrol et; nihai değer daima katalog değeridir.`,0]);
+  ms.push(["Kalkış anı torku nominal torkun birkaç katına çıkabilir; bazı kataloglar 4 kata kadar uyarır. K<sub>A</sub> değerini buna göre seç.",Sb>=1&&hubOk?1:0]);
+  if(Sb>=1&&hubOk) ms.push(["Bilezik bu tork için yeterli görünüyor. Montajda yüzeyleri ince yağla, molibdenli gres kullanma, cıvataları çaprazlama kademeli sık ve tork anahtarıyla kontrol et.",1]);
+  o.innerHTML=`
+  <div class="big"><div><b>${f(Tc,0)}</b><i>bilezik torku, N·m</i></div><div><b>${f(Sb,2)}</b><i>emniyet T / T<sub>d</sub></i></div><div><b>${hubOk?f(Math.ceil(Dmin),0):"—"}</b><i>en küçük göbek dış çapı, mm</i></div></div>
+  <h3><span>1</span>Tork (sürtünmeyle)</h3><table>
+  ${row("Baskı kuvveti F<sub>r</sub>",f(Fr/1000,0)+" kN","p · π · d · L = "+f(p,0)+" · π · "+f(d,0)+" · "+f(L,0))}
+  ${row("Sürtünme kuvveti F<sub>s</sub>",f(Fs/1000,1)+" kN","μ · F<sub>r</sub> = "+f(mu,2)+" · "+f(Fr/1000,0)+" kN")}
+  ${row("Formülle tork",f(Tf,0)+" N·m","T = F<sub>s</sub> · d/2 = p · π · d · L · μ · d/2",1)}
+  ${row("Hesapta kullanılan tork",f(Tc,0)+" N·m",Tk>0?"katalog değeri":"formül değeri",1)}
+  ${row("Eksenel kuvvet kapasitesi",f(Fax,1)+" kN","2 · T / d (yalnız eksenel yükte)")}
+  ${row("Emniyet",f(Sb,2),"T / T<sub>d</sub> · T<sub>d</sub> = "+f(Td,0)+" N·m",1)}
+  </table>
+  <h3><span>2</span>Göbek dış çapı kontrolü</h3><table>
+  ${row("Montaj tipi katsayısı x",f(x,1),"")}
+  ${row("Katsayı K",hubOk?f(Dmin/D,3):"—","√((R<sub>e</sub> + x·p<sub>N</sub>) / (R<sub>e</sub> − x·p<sub>N</sub>))")}
+  ${row("En küçük göbek dış çapı",hubOk?f(Dmin,1)+" mm":"—","D · K = "+f(D,0)+" · K",1)}
+  </table>
+  ${ms.map(m=>msg(m[0],m[1])).join("")}`;
+}
+function calcCmp(c){
+  const m=[["Kama",R.kama],["Sıkı geçme",R.sg],["Konik bilezik",R.kb]];
+  const T=c.Td; const K=R.kama,S=R.sg,B=R.kb; let best=-1,why="";
+  if(!c.rev&&K&&K.ok){best=0;why="Yük tek yönlü ve kama yeterli; en ucuz, en kolay imal edilen ve sökülen çözüm."}
+  else if(B&&B.ok){best=2;why=c.rev?"Yön değişen/darbeli yükte boşluksuz bağlantı gerekir; bilezik yeterli ve sökülebilir.":"Kama yetmediği için boşluksuz ve sökülebilir çözüm."}
+  else if(S&&S.ok){best=1;why="Sıkı geçme yeterli; ancak söküm zordur, sökülmeyecek bağlantılar için uygundur."}
+  $("c3").innerHTML=m.map((x,i)=>{const r=x[1];return `<div class="${i===best?'best':''}"><b>${x[0]}${i===best?' · önerilen':''}</b><strong class="${r&&r.ok?'y':'n'}">${r?f(r.cap,0):"—"} N·m</strong><i>${r?(r.ok?"✓ yeterli":"✗ yetersiz")+" · "+r.txt:"girdileri kontrol et"}</i></div>`}).join("");
+  let t="";
+  if(best<0) t=msg("Mevcut girdilerle hiçbir yöntem yeterli değil. Sekmelerdeki uyarılara bak; mil çapı, göbek boyu veya bilezik tipi değişmeli.");
+  else t=msg(`Tasarım torku ${f(T,0)} N·m için önerilen: <b>${m[best][0]}</b>. ${why}`,1);
+  if(c.rev&&K&&K.ok) t+=msg("Kama hesapta yeterli çıksa da yön değişen yükte yuva zamanla döverek büyür; bu yüzden önerilmedi.");
+  t+=msg("Kama değeri S emniyetiyle azaltılmış izin verilen torktur. Sıkı geçme en küçük sıkılıktaki torktur (kayma emniyeti hedefiyle karşılaştırılır). Bilezik değeri katalog veya formül torkudur. Karşılaştırma yalnızca girdiğin değerler içindir.",1);
+  $("cmsg").innerHTML=t;
+  $("ctab").innerHTML=`<tr><th>Özellik</th><th>Kama</th><th>Sıkı geçme</th><th>Konik bilezik</th></tr>
+  <tr class="cap"><td>Taşınan tork</td>${m.map(x=>`<td class="${x[1]&&x[1].ok?'y':'n'}">${x[1]?f(x[1].cap,0)+" N·m":"—"}</td>`).join("")}</tr>
+  <tr><td>Boşluk / yön değişen yük</td><td class="n">Boşluk var; yön değişen yükte yuva döverek büyür</td><td class="y">Boşluksuz</td><td class="y">Boşluksuz</td></tr>
+  <tr><td>Mile çentik etkisi</td><td class="n">Kama yuvası; burulmada teorik olarak 3 katına kadar</td><td>Yuva yok; göbek kenarlarında gerilme yığılması ve sürtünme korozyonu riski</td><td class="y">Yuva yok</td></tr>
+  <tr><td>Konum ayarı</td><td>Yok, yuvaya bağlı</td><td>Yok, montajda sabitlenir</td><td class="y">Açısal ve eksenel konum istenen yerde sıkılır</td></tr>
+  <tr><td>Söküm</td><td class="y">Kolay</td><td class="n">Zor; ısıtma veya basınçlı yağ gerekir</td><td class="y">Kolay; söküm cıvatalarıyla</td></tr>
+  <tr><td>İmalat</td><td>Yuva frezeleme, standart parça</td><td>Dar tolerans, ısıtma donanımı</td><td>Yuva yok; mil ve göbekte orta hassasiyette tolerans</td></tr>
+  <tr><td>Maliyet</td><td class="y">Düşük</td><td>Düşük–orta (işçilik ve tolerans)</td><td class="n">Yüksek (bilezik fiyatı)</td></tr>
+  <tr><td>Tipik kullanım</td><td>Tek yönlü, darbesiz güç aktarımı</td><td>Sökülmeyecek, seri üretim bağlantıları</td><td>Yön değişen yük, servo/hassas konum, sık söküm</td></tr>`;
+}
+function calc(){const c=common();if(!(c.d>0&&c.T>0&&c.KA>0)){["o-kama","o-sg","o-kb"].forEach(id=>$(id).innerHTML=msg("Ortak girdileri kontrol et."));return}
+  calcKama(c);calcSG(c);calcKB(c);calcCmp(c)}
+document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",calc));
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
+  ["kama","sg","kb","cmp"].forEach(k=>$("p-"+k).hidden=(k!==b.dataset.t));
+  try{localStorage.setItem("tm_mg_tab",b.dataset.t)}catch(e){}
+}));
+const DEF={};document.querySelectorAll("input,select").forEach(e=>DEF[e.id]=e.type==="checkbox"?e.checked:e.value);
+$("presetReset").addEventListener("click",()=>{for(const k in DEF){const e=$(k);if(!e)continue;if(e.type==="checkbox")e.checked=DEF[k];else e.value=DEF[k]}calc()});
+$("presetReel").addEventListener("click",()=>{$("d").value=50;$("T").value=1000;$("KA").value=1.25;$("bL").value=20;$("bp").value=190;$("bmu").value=0.12;$("bTk").value=1770;$("bD").value=80;$("bpN").value=115;$("bRe").value=305;$("bx").value="0.6";calc();document.querySelector('.tab[data-t="kb"]').click();$("o-kb").scrollIntoView({behavior:"smooth"})});
+try{const t=localStorage.getItem("tm_mg_tab");if(t){const b=document.querySelector(`.tab[data-t="${t}"]`);if(b)b.click()}}catch(e){}
+calc();
+</script>
+</body>
+</html>
