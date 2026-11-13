@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sac Bükme Açınım ve Abkant Hesaplayıcı · Teknik Mekanik</title>
+<style>
+:root{--bg:#1e2024;--bg2:#26282d;--panel:#2b2d33;--line:#3e4048;--txt:#ececee;--sub:#9a9ca3;--cop:#d68c5a;--cop2:#f2be96;--ok:#7fd49a;--warn:#ff8a65}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,rgba(0,0,0,.02) 2px 5px),linear-gradient(#24262a,#1a1b1f);min-height:100vh;padding:0 16px 40px}
+.wrap{max-width:1000px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:700 15px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--txt);text-decoration:none}
+.logo b{border:2px solid var(--txt);padding:2px 7px}
+.logo:hover{color:var(--cop2)}
+.badge{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;letter-spacing:.04em}
+h1{font:700 clamp(26px,5vw,40px)/1.15 Georgia,"Times New Roman",serif;text-align:center;margin:26px 0 6px}
+.lead{text-align:center;color:var(--cop);font-weight:700;letter-spacing:.12em;font-size:13px;margin:0}
+.rule{width:120px;height:3px;background:var(--cop);margin:14px auto 22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 12px}
+.card h2{margin:0 0 12px;font-size:14px;letter-spacing:.1em;color:var(--cop);text-transform:uppercase}
+.shared{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
+@media(max-width:760px){.shared{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.f label{display:block;font-size:13px;color:var(--txt);margin-bottom:4px}
+.f label small{color:var(--sub);font-size:11.5px}
+.f .in{display:flex;align-items:center;gap:6px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--txt);cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--cop)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;margin-top:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 112px 54px;align-items:center;gap:8px;margin:7px 0}
+.row label{color:var(--txt);font-size:14px}
+.row label small{display:block;color:var(--sub);font-size:11.5px}
+input,select{width:100%;background:#1c1d21;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 8px;font:600 15px ui-monospace,Menlo,Consolas,monospace;text-align:right}
+select{text-align:left;font-size:13.5px}
+.row select{grid-column:2/4}
+input:focus,select:focus{outline:2px solid var(--cop);border-color:transparent}
+.u{color:var(--sub);font-size:12.5px}
+details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+summary{cursor:pointer;color:var(--sub);font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+.tab{background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:8px 16px;font:700 14px system-ui,sans-serif;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--cop);border-color:var(--cop);color:#1c1814}
+.pane[hidden]{display:none!important}
+.res h3{margin:16px 0 6px;font-size:13px;color:var(--cop2);letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.res h3 span{background:var(--cop);color:#1c1814;border-radius:6px;padding:0 7px;font-size:12px}
+.res h3:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse}
+td,th{padding:6px 4px;border-bottom:1px solid #34363d;vertical-align:top}
+td.k{color:var(--sub);font-size:13.5px;width:50%}
+td.v{font:700 15px ui-monospace,Menlo,Consolas,monospace;text-align:right;white-space:nowrap}
+td.f{font:12px ui-monospace,Menlo,Consolas,monospace;color:#7d8088;padding-top:0}
+tr.hl td.v{color:var(--cop2)}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:6px}
+@media(max-width:560px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big div{background:#202126;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.big b{display:block;font:700 21px ui-monospace,Menlo,Consolas,monospace;color:var(--cop2)}
+.big i{font-style:normal;color:var(--sub);font-size:12px}
+.msg{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;border-left:4px solid var(--warn);background:rgba(255,138,101,.08)}
+.msg.ok{border-color:var(--ok);background:rgba(127,212,154,.07)}
+.cmp{overflow-x:auto}
+.cmp table{min-width:640px}
+.cmp th{font:700 12.5px system-ui,sans-serif;letter-spacing:.06em;color:var(--cop2);text-transform:uppercase;text-align:left;border-bottom:1px solid var(--cop)}
+.cmp td{font-size:13.5px;color:var(--txt)}
+.cmp td:first-child{color:var(--sub);width:22%}
+.cmp tr.cap td{font:700 15px ui-monospace,Menlo,Consolas,monospace}
+.y{color:var(--ok)}.n{color:var(--warn)}
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+@media(max-width:640px){.cards3{grid-template-columns:1fr}}
+.cards3 div{background:#202126;border:1px solid var(--line);border-radius:12px;padding:12px}
+.cards3 div.best{border-color:var(--cop)}
+.cards3 b{display:block;font:700 13px system-ui,sans-serif;letter-spacing:.08em;color:var(--cop2);text-transform:uppercase}
+.cards3 strong{display:block;font:700 22px ui-monospace,Menlo,Consolas,monospace;margin:4px 0}
+.cards3 i{font-style:normal;font-size:12.5px;color:var(--sub)}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px}
+.btn{background:transparent;border:1px solid var(--cop);color:var(--cop2);padding:9px 16px;border-radius:22px;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
+.btn.p{background:linear-gradient(#f0b48a,#c97a48);color:#1c1814;border:0}
+.disc{margin:18px 0 0;padding:14px 16px;border-radius:12px;border:1px solid var(--cop);border-left:6px solid var(--cop);background:rgba(214,140,90,.08);font-size:14px;line-height:1.55}
+.disc b{color:var(--cop2)}
+.foot{color:var(--sub);font-size:12px;text-align:center;margin-top:18px;line-height:1.6}
+.foot a{color:inherit}
+.preset{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 16px}
+@media print{body{background:#fff;color:#000;padding:0}.card,.big div,.cards3 div{background:#fff;border-color:#aaa}input,select{background:#fff;color:#000;border-color:#aaa}td.k,td.f,.u,.foot,.row label small,.cards3 i{color:#444}.btns,.tabs,.preset,details summary{display:none}.pane[hidden]{display:block!important}.disc{background:#fff;border-color:#000}.disc b,td.v,.big b,tr.hl td.v,.cards3 b{color:#000}header{border-color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener" title="Instagram: @teknik.mekaniktm"><b>TM</b> TEKNİK MEKANİK</a>
+  <div class="badge">★ ABONELERE ÖZEL</div>
+</header>
+<h1>Sac Bükme Açınım ve Abkant Hesaplayıcı</h1>
+<p class="lead">AÇINIM · K FAKTÖRÜ · V KALIP · TONAJ · EN KISA KANAT</p>
+<p style="text-align:center;margin:8px 0 0;font-size:13px;color:var(--sub)">Taslak hesap aracıdır · nihai değerler için deneme bükümü yapın, tezgâh ve kalıp üreticisinin tablolarını esas alın</p>
+<div class="rule"></div>
+
+<div class="preset">
+  <button class="btn p" type="button" id="presetReel">Reeldeki örneği yükle (2 mm · V16 · 50+50)</button>
+  <button class="btn" type="button" id="presetU">U profil örneği (2 büküm)</button>
+  <button class="btn" type="button" id="presetReset">Varsayılanlara dön</button>
+</div>
+
+<section class="card">
+  <h2>Malzeme ve kalıp</h2>
+  <div class="shared">
+    <div class="f"><label>Malzeme</label><div class="in"><select id="mat"></select></div></div>
+    <div class="f"><label>Çekme dayanımı R<sub>m</sub> <small>tonaj için</small></label><div class="in"><input id="Rm" type="number" value="450" step="10"><span class="u">N/mm²</span></div></div>
+    <div class="f"><label>Sac kalınlığı t</label><div class="in"><input id="t" type="number" value="2" step="0.5"><span class="u">mm</span></div></div>
+    <div class="f"><label>V kalıp açıklığı <small>ilk seçenek = öneri</small></label><div class="in"><select id="V"></select></div></div>
+  </div>
+  <details>
+    <summary>İç radyüs ve K faktörü ayarları</summary>
+    <div class="shared" style="margin-top:10px">
+      <div class="f"><label>İç radyüs R<sub>i</sub> <small>havada bükümde ≈ V × oran</small></label><div class="in"><select id="riMode"><option value="auto">Otomatik (V × oran)</option><option value="man">Elle gir</option></select></div></div>
+      <div class="f"><label>R<sub>i</sub> (elle)</label><div class="in"><input id="riMan" type="number" value="3" step="0.1"><span class="u">mm</span></div></div>
+      <div class="f"><label>K faktörü</label><div class="in"><select id="kMode"><option value="din">DIN 6935 (R<sub>i</sub>/t'ye göre)</option><option value="avg">Atölye ortalaması 0,44</option><option value="man">Elle gir</option></select></div></div>
+      <div class="f"><label>K (elle)</label><div class="in"><input id="kMan" type="number" value="0.446" step="0.01"><span class="u"></span></div></div>
+    </div>
+  </details>
+</section>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" data-t="acin" aria-selected="true">1 · Açınım</button>
+  <button class="tab" role="tab" data-t="ton" aria-selected="false">2 · Abkant tonajı</button>
+  <button class="tab" role="tab" data-t="vtab" aria-selected="false">3 · V kalıp tablosu</button>
+</div>
+
+<!-- AÇINIM -->
+<div class="grid pane" id="p-acin">
+<section class="card">
+  <h2>Parça</h2>
+  <div class="row"><label>Büküm sayısı</label><select id="n"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+  <div class="row"><label>Kanat ölçüsü<small>çizimdeki ölçü nereden alınmış?</small></label><select id="meas"><option value="out">Dış ölçü (dıştan dışa)</option><option value="in">İç ölçü (içten içe)</option></select></div>
+  <div id="legs"></div>
+  <details><summary>Nasıl hesaplanır?</summary>
+  <p class="u" style="line-height:1.6">Büküm payı BA = π·A/180·(R<sub>i</sub> + K·t)<br>Dış geri çekme OSSB = (R<sub>i</sub> + t)·tan(A/2)<br>Büküm kesintisi BD = 2·OSSB − BA<br>Açınım = Σ kanat dış ölçüsü − Σ BD<br>A: büküm açısı (düz sac 0°, L parça 90°).</p></details>
+</section>
+<section class="card res" id="o-acin"></section>
+</div>
+
+<!-- TONAJ -->
+<div class="grid pane" id="p-ton" hidden>
+<section class="card">
+  <h2>Tezgâh</h2>
+  <div class="row"><label>Büküm boyu L<small>kalıba değen boy</small></label><input id="L" type="number" value="1000" step="50"><span class="u">mm</span></div>
+  <div class="row"><label>Abkant kapasitesi<small>boş bırakılabilir</small></label><input id="Pcap" type="number" value="100" step="10"><span class="u">ton</span></div>
+  <div class="row"><label>Abkant tabla boyu</label><input id="Lcap" type="number" value="3000" step="100"><span class="u">mm</span></div>
+  <details><summary>Formül</summary>
+  <p class="u" style="line-height:1.6">Havada büküm, 90°:<br>F [kN] ≈ 1,42 · R<sub>m</sub> · t² · L / (1000 · V)<br>1 ton ≈ 9,81 kN. Dibe basma (bottoming) yaklaşık 3–5 kat, ezme (coining) çok daha fazla kuvvet ister.</p></details>
+</section>
+<section class="card res" id="o-ton"></section>
+</div>
+
+<!-- V TABLOSU -->
+<div class="pane" id="p-vtab" hidden style="margin-top:16px">
+<section class="card res">
+  <h2>Seçili malzeme ve kalınlık için standart V kalıplar</h2>
+  <div class="cmp"><table id="vt"></table></div>
+  <div id="vnote"></div>
+</section>
+</div>
+
+<div class="btns">
+  <button class="btn p" type="button" onclick="window.print()">Yazdır / PDF</button>
+  <a class="btn" href="index.html">Abone arşivine dön</a>
+  <a class="btn" href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">Instagram: @teknik.mekaniktm</a>
+</div>
+
+<div class="disc"><b>⚠ Taslak hesap aracıdır.</b> Sonuçlar havada büküm için yaygın kabul gören yaklaşık bağıntılara (R<sub>i</sub> ≈ V × oran, DIN 6935 K faktörü, 1,42 katsayılı tonaj formülü) dayanır. Gerçek iç radyüs, K faktörü ve geri esneme; malzeme partisine, hadde yönüne, üst bıçak radyüsüne ve tezgâha göre değişir. Seri üretimden önce deneme bükümü yapın, ölçün ve atölyenizin kendi K değerini çıkarın. Tonajda tezgâh ve kalıp üreticisinin sınırlarını aşmayın. Nihai hesap için tedarikçinize veya yetkin bir uzmana danışın.</div>
+<div class="foot">© Teknik Mekanik · <a href="https://www.instagram.com/teknik.mekaniktm/" target="_blank" rel="noopener">@teknik.mekaniktm</a> · abonelerine özeldir, lütfen abone olmayanlarla paylaşmayın.</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const f=(x,n=1)=>isFinite(x)?x.toLocaleString("tr-TR",{minimumFractionDigits:n,maximumFractionDigits:n}):"—";
+const g=id=>parseFloat(String($(id).value).replace(",","."));
+function row(k,v,fm,hl){return `<tr${hl?' class="hl"':''}><td class="k">${k}</td><td class="v">${v}</td></tr>`+(fm?`<tr><td class="f" colspan="2">${fm}</td></tr>`:"")}
+const msg=(t,ok)=>`<div class="msg${ok?' ok':''}">${t}</div>`;
+// malzeme: ad, Rm tipik (N/mm²), Ri/V oranı, en küçük Ri/t önerisi
+const MATS=[["DC01 soğuk haddelenmiş sac",400,0.16,0.5],["S235JR yapı çeliği",450,0.16,1.0],["S355J2 yapı çeliği",550,0.17,1.5],["1.4301 (304) paslanmaz",650,0.21,1.0],["5754-H22 alüminyum",250,0.14,1.5],["1050 saf alüminyum",110,0.13,0.5]];
+const VSTD=[6,8,10,12,16,20,25,32,40,50,63,80,100,125,160,200,250];
+MATS.forEach((m,i)=>{const o=document.createElement("option");o.value=i;o.textContent=m[0];if(i===1)o.selected=true;$("mat").appendChild(o)});
+function vSuggest(t){const k=t<=3?8:(t<=10?10:12);const v=k*t;return VSTD.find(x=>x>=v-1e-9)||VSTD[VSTD.length-1]}
+function fillV(){const s=$("V"),cur=s.value;s.innerHTML="";const t=g("t");const o0=document.createElement("option");o0.value="auto";o0.textContent="Öneri: V"+vSuggest(t);s.appendChild(o0);
+  VSTD.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent="V"+v+" · "+f(v/t,1)+"×t";s.appendChild(o)});
+  if([...s.options].some(o=>o.value===cur))s.value=cur;}
+$("mat").addEventListener("change",()=>{$("Rm").value=MATS[+$("mat").value][1];calc()});
+$("t").addEventListener("change",()=>{fillV();calc()});
+let LEGS={n:1,L:[50,50],A:[90]};
+function buildLegs(){const n=+$("n").value;while(LEGS.L.length<n+1)LEGS.L.push(40);while(LEGS.A.length<n)LEGS.A.push(90);LEGS.L.length=n+1;LEGS.A.length=n;
+  let h="";for(let i=0;i<=n;i++){h+=`<div class="row"><label>Kanat ${i+1}</label><input data-l="${i}" type="number" value="${LEGS.L[i]}" step="1"><span class="u">mm</span></div>`;
+    if(i<n)h+=`<div class="row"><label>&nbsp;&nbsp;↳ Büküm ${i+1} açısı A<small>0° düz · 90° dik</small></label><input data-a="${i}" type="number" value="${LEGS.A[i]}" step="1" min="1" max="179"><span class="u">°</span></div>`}
+  $("legs").innerHTML=h;
+  $("legs").querySelectorAll("input").forEach(e=>e.addEventListener("input",()=>{const v=parseFloat(e.value.replace(",","."));if(e.dataset.l!==undefined)LEGS.L[+e.dataset.l]=v;else LEGS.A[+e.dataset.a]=v;calc()}));}
+$("n").addEventListener("change",()=>{buildLegs();calc()});
+function base(){const m=MATS[+$("mat").value];const t=g("t");const Rm=g("Rm");
+  const V=$("V").value==="auto"?vSuggest(t):+$("V").value;
+  const Ri=$("riMode").value==="man"?g("riMan"):m[2]*V;
+  const r=Ri/t; let K;
+  if($("kMode").value==="din")K=Math.min(0.5,Math.max(0.3,(0.65+0.5*Math.log10(Math.max(r,0.05)))/2)); else if($("kMode").value==="avg")K=0.44; else K=g("kMan");
+  return {m,t,Rm,V,Ri,K,r}}
+function bend(Ri,t,K,A){const a=A*Math.PI/180;const BA=a*(Ri+K*t);const OSSB=(Ri+t)*Math.tan(a/2);const ISSB=Ri*Math.tan(a/2);return {BA,OSSB,ISSB,BDo:2*OSSB-BA,BDi:2*ISSB-BA}}
+function calcAcin(b){const o=$("o-acin");const {t,V,Ri,K,r,m}=b;const n=+$("n").value;const out=$("meas").value==="out";
+  let sumL=0,sumBD=0,rows="";
+  for(let i=0;i<=n;i++)sumL+=LEGS.L[i];
+  for(let i=0;i<n;i++){const z=bend(Ri,t,K,LEGS.A[i]);const BD=out?z.BDo:z.BDi;sumBD+=BD;
+    rows+=row(`Büküm ${i+1} · A = ${f(LEGS.A[i],0)}°`,`BA ${f(z.BA,2)} · BD ${f(BD,2)} mm`)}
+  const blank=sumL-sumBD;
+  const bmin=0.7*V;
+  let shortLeg=[];LEGS.L.forEach((l,i)=>{if(l<bmin+(out?t:0))shortLeg.push(i+1)});
+  let h=`<div class="big"><div><b>${f(blank,1)}</b><i>açınım boyu (mm)</i></div><div><b>${f(Ri,2)}</b><i>iç radyüs R<sub>i</sub> (mm)</i></div><div><b>${f(K,3)}</b><i>K faktörü</i></div></div>`;
+  h+=`<h3><span>1</span>Girdi özeti</h3><table>`+row("Kalınlık · kalıp",`${f(t,1)} mm · V${V}`,`V/t = ${f(V/t,1)} · öneri: t ≤ 3 mm için 8t, 3–10 mm için 10t, > 10 mm için 12t`)+row("İç radyüs R<sub>i</sub>",f(Ri,2)+" mm",$("riMode").value==="man"?"elle girildi":`havada büküm: R<sub>i</sub> ≈ ${f(m[2],2)} × V`)+row("R<sub>i</sub>/t",f(r,2))+row("K faktörü",f(K,3),$("kMode").value==="din"?"DIN 6935: k = 0,65 + 0,5·lg(R<sub>i</sub>/t), K = k/2 (R<sub>i</sub>/t > 5 için 0,5)":($("kMode").value==="avg"?"çelik sacta yaygın atölye ortalaması":"elle girildi"))+`</table>`;
+  h+=`<h3><span>2</span>Bükümler</h3><table>${rows}</table>`;
+  h+=`<h3><span>3</span>Sonuç</h3><table>`+row(`Kanat ${out?"dış":"iç"} ölçüleri toplamı`,f(sumL,1)+" mm")+row("Büküm kesintileri toplamı",f(sumBD,2)+" mm")+row("Kesilecek sac boyu (açınım)",f(blank,1)+" mm","Σ kanat − Σ BD",true)+row("En kısa kanat (yaklaşık)",f(bmin+(out?t:0),1)+" mm",`≈ 0,7 × V${out?" + t (dış ölçü)":""}; kalıba göre 0,7–0,8 × V`)+`</table>`;
+  let ms=[];
+  if(shortLeg.length)ms.push([`Kanat ${shortLeg.join(", ")} bu kalıp için kısa: sac kalıp omzundan kayar. Daha küçük V seçin veya kanadı uzatın.`,0]);
+  if(r<m[3])ms.push([`R<sub>i</sub>/t = ${f(r,2)}, bu malzeme için önerilen en küçük oran yaklaşık ${f(m[3],1)}. Dış yüzeyde çatlama riski; hadde yönüne dik bükün veya radyüsü büyütün.`,0]);
+  if(V/t<6)ms.push(["V/t oranı 6'dan küçük: tonaj hızla artar, kalıp ve bıçak zorlanır.",0]);
+  if(!ms.length)ms.push(["Kanat boyları ve radyüs bu kalıp için uygun görünüyor. İlk parçada deneme bükümü yapıp ölçün.",1]);
+  h+=ms.map(x=>msg(x[0],x[1])).join("");
+  o.innerHTML=h;
+  return {blank,bmin}}
+function ton(Rm,t,L,V){const kN=1.42*Rm*t*t*L/(1000*V);return {kN,ton:kN/9.81}}
+function calcTon(b){const o=$("o-ton");const {t,Rm,V}=b;const L=g("L"),Pc=g("Pcap"),Lc=g("Lcap");
+  const z=ton(Rm,t,L,V), zm=ton(Rm,t,1000,V);
+  let h=`<div class="big"><div><b>${f(z.ton,1)}</b><i>gereken kuvvet (ton)</i></div><div><b>${f(zm.ton,1)}</b><i>metre başına (ton/m)</i></div><div><b>${f(z.kN,0)}</b><i>kN</i></div></div>`;
+  h+=`<h3><span>1</span>Hesap</h3><table>`+row("Formül","1,42·R<sub>m</sub>·t²·L / (1000·V)")+row("Değerler",`R<sub>m</sub> ${f(Rm,0)} · t ${f(t,1)} · L ${f(L,0)} · V${V}`)+row("Kuvvet",f(z.kN,0)+" kN = "+f(z.ton,1)+" ton",null,true)+`</table>`;
+  const hz=[["V"+V,V]];const vs=vSuggest(t);
+  h+=`<h3><span>2</span>Kalıp değişirse</h3><table>`;
+  VSTD.filter(v=>v>=4*t&&v<=16*t).forEach(v=>{const q=ton(Rm,t,L,v);h+=row("V"+v+(v===V?" (seçili)":"")+(v===vs?" · öneri":""),f(q.ton,1)+" ton",null,v===V)});
+  h+=`</table>`;
+  let ms=[];
+  if(Pc>0){const u=z.ton/Pc;ms.push([u<=0.8?`Kapasitenin %${f(u*100,0)}'i kullanılıyor; uygun.`:(u<=1?`Kapasitenin %${f(u*100,0)}'i: sınıra yakın, üretici sınırını kontrol edin.`:`Gereken kuvvet abkant kapasitesini aşıyor (%${f(u*100,0)}). Daha büyük V, daha kısa boy veya daha büyük tezgâh gerekir.`),u<=0.8?1:0])}
+  if(L<Lc*0.5&&Pc>0)ms.push(["Kısa parçayı tablanın ortasında bükün. Kısa boyda tam kapasite kullanmak tablayı ve koçu yerel olarak zorlar; üreticinin ton/metre sınırına uyun.",0]);
+  h+=ms.map(x=>msg(x[0],x[1])).join("");
+  o.innerHTML=h}
+function calcV(b){const {t,Rm,m}=b;let h=`<tr><th>Kalıp</th><th>V/t</th><th>R<sub>i</sub> (mm)</th><th>En kısa kanat (mm)</th><th>Tonaj (ton/m)</th><th>Uygunluk</th></tr>`;const vs=vSuggest(t);
+  VSTD.forEach(v=>{const r=v/t;if(r<4||r>16)return;const Ri=m[2]*v;const tm=ton(Rm,t,1000,v).ton;const ok=r>=6&&r<=12;
+    h+=`<tr class="${v===vs?'cap':''}"><td>V${v}${v===vs?' ★':''}</td><td>${f(r,1)}</td><td>${f(Ri,2)}</td><td>${f(0.7*v,1)}</td><td>${f(tm,1)}</td><td class="${ok?'y':'n'}">${ok?'uygun':(r<6?'dar: yüksek tonaj':'geniş: büyük radyüs')}</td></tr>`});
+  $("vt").innerHTML=h;
+  $("vnote").innerHTML=msg(`★ önerilen kalıp: V${vs}. Küçük V daha küçük radyüs ve daha kısa kanat verir ama tonaj artar; büyük V tonajı düşürür, radyüsü ve en kısa kanadı büyütür.`,1)}
+function calc(){fillVkeep();const b=base();calcAcin(b);calcTon(b);calcV(b)}
+function fillVkeep(){if(!$("V").options.length)fillV()}
+["Rm","riMan","kMan","L","Pcap","Lcap"].forEach(id=>$(id).addEventListener("input",calc));
+["V","riMode","kMode","meas"].forEach(id=>$(id).addEventListener("change",calc));
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
+  ["acin","ton","vtab"].forEach(k=>$("p-"+k).hidden=(k!==b.dataset.t));try{localStorage.setItem("tm_sac_tab",b.dataset.t)}catch(e){}}));
+function setAll(o){$("mat").value=o.mat;$("Rm").value=MATS[o.mat][1];$("t").value=o.t;fillV();$("V").value=o.V;$("riMode").value=o.riMode;$("riMan").value=o.riMan;$("kMode").value=o.kMode;$("kMan").value=o.kMan;$("n").value=o.L.length-1;$("meas").value=o.meas;LEGS={L:o.L.slice(),A:o.A.slice()};buildLegs();$("L").value=o.Lb;calc()}
+const DEF={mat:1,t:2,V:"auto",riMode:"auto",riMan:3,kMode:"din",kMan:0.446,L:[50,50],A:[90],meas:"out",Lb:1000};
+$("presetReel").addEventListener("click",()=>setAll({mat:1,t:2,V:"16",riMode:"auto",riMan:2.56,kMode:"man",kMan:0.446,L:[50,50],A:[90],meas:"out",Lb:1000}));
+$("presetU").addEventListener("click",()=>setAll({mat:3,t:1.5,V:"12",riMode:"auto",riMan:2.5,kMode:"din",kMan:0.44,L:[30,60,30],A:[90,90],meas:"out",Lb:1500}));
+$("presetReset").addEventListener("click",()=>setAll(DEF));
+fillV();buildLegs();calc();
+try{const t=localStorage.getItem("tm_sac_tab");if(t){const b=document.querySelector(`.tab[data-t="${t}"]`);if(b)b.click()}}catch(e){}
+</script>
+</body>
+</html>
